@@ -1,35 +1,33 @@
 import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 
+
+export interface Cell {
+    value: string | number | undefined;
+    row: number;
+    column: number;
+}
+
 export class SheetManager {
     constructor(sheet: Sheet) {
         this.sheet = sheet;
     }
 
-    public findCell(value: string): [number, number] {
-        let rowIndex = -1;
-        let columnIndex = -1;
-
+    public findCellWithValue(value: string): Cell | undefined {
         let rows = this.sheet.getDataRange().getValues();
 
-        for (let i = 0; i < rows.length; i++) {
-            const row = rows[i];
+        for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
+            const row = rows[rowIdx];
 
-            for (let j = 0; j < row.length; j++) {
-                const cell = row[j];
+            for (let colIdx = 0; colIdx < row.length; colIdx++) {
+                const cell = row[colIdx];
 
-                if (cell === value) {
-                    rowIndex = i;
-                    columnIndex = j;
-                    break;
+                if (typeof value == typeof cell && cell === value) {
+                    return {value, row: rowIdx, column: colIdx};
                 }
-            }
-
-            if (rowIndex !== -1) {
-                break;
             }
         }
 
-        return [rowIndex, columnIndex];
+        return null;
     }
 
     private sheet: Sheet;

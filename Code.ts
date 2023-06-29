@@ -46,10 +46,12 @@ function main() {
     let sheetManager = new SheetManager(sourceSprSheet.getSheetByName(sheetName));
 
     const cellOfInterest = "Final delivery date";
-    let [rowId, columnId] = sheetManager.findCell(cellOfInterest);
+    let cell = sheetManager.findCellWithValue(cellOfInterest);
 
-    if (rowId != -1 && columnId != -1) {
-        Logger.log(`Found a cell at ${rowId}:${columnId}`);
+    if (cell) {
+        Logger.log(`Found a cell at ${cell.row}:${cell.column}`);
     }
-    // getValueForRowAndColumnInSheet()
+
+
+
 }
