@@ -49,8 +49,10 @@ function main() {
     let cell = sheetManager.findCellWithValue(cellOfInterest);
 
     if (cell) {
-        Logger.log(`Found a cell at ${cell.row}:${cell.column}`);
+        Logger.log(`Found a cell at ${cell.position.row}:${cell.position.column}`);
+        Logger.log(`The vale of cell: ${sheetManager.getCellValue(cell.position)}`);
     }
+
 
 
 
