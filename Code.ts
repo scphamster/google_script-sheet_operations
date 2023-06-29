@@ -1,5 +1,7 @@
 import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
+import {getValueFromCell} from "./src/Helpers";
+import {SheetManager} from "./src/SheetManager";
 
 function findSheet(spreadsheetName: string): Spreadsheet {
     let fileType = 'application/vnd.google-apps.spreadsheet';
@@ -24,7 +26,7 @@ function findStringInSheet(spreadsheet: Spreadsheet, sheetName: string, needle: 
         for (var i = 0; i < data.length; i++) {
             for (var j = 0; j < data[i].length; j++) {
                 if (data[i][j] == needle) {
-                    Logger.log("Found: row=" + (i+1) + " column=" + (j+1));  // "+1" is added because spreadsheet rows & columns are 1-indexed
+                    Logger.log("Found: row=" + (i + 1) + " column=" + (j + 1));  // "+1" is added because spreadsheet rows & columns are 1-indexed
                 }
             }
         }
@@ -38,4 +40,16 @@ function main() {
     Logger.log("file was found! " + sourceSprSheet);
 
     findStringInSheet(sourceSprSheet, "sheet1", "somestring");
+
+    const sheetName = "sheet1";
+
+    let sheetManager = new SheetManager(sourceSprSheet.getSheetByName(sheetName));
+
+    const cellOfInterest = "Final delivery date";
+    let [rowId, columnId] = sheetManager.findCell(cellOfInterest);
+
+    if (rowId != -1 && columnId != -1) {
+        Logger.log(`Found a cell at ${rowId}:${columnId}`);
+    }
+    // getValueForRowAndColumnInSheet()
 }
